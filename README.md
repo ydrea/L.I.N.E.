@@ -9,7 +9,7 @@ Now, you are probably wondering how can another company be a virus designed to h
 
 The response is simple – it belongs to You and I! Really, it belongs to everyone who chooses to either generate income for this company (by purchasing its goods, or paying for its services), or create added value to it (by offering goods or services through this company). The value traded is automatically converted into a percentage of ownership, so no one gets wealthy, but everyone who decides to partake gets richer. 
 
-The mechanism for assigning/claiming the value is an open-source blockchain algorithm, describing a decentralized cooperative enterprise that uses blockchain-based value accounting to assign ownership dynamically to contributors and consumers — ie. a kind of “anti-capitalist capitalist” Decentralised Autonomous Organisation — a mechanism that rewards value-creation and participation directly, rather than hoarding ownership, as presented in the table below:
+The mechanism for assigning/claiming the value is an open-source blockchain algorithm, describing a Decentralized Cooperative Enterprise that uses blockchain-based value accounting to assign ownership dynamically to contributors and consumers — ie. a kind of “anti-capitalist capitalist” Decentralised Autonomous Organisation (DAO) — a mechanism that rewards value-creation and participation directly, rather than hoarding ownership, as presented in the table below:
 
 
 ## DAO comparison table 
