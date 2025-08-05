@@ -21,3 +21,149 @@ The mechanism for assigning/claiming the value is an open-source blockchain algo
 | Profit Distribution | Optional                                 | Central to the model — shared by contributors |
 | Accessibility       | High barrier (capital or network needed) | Low — anyone can join by participating        |
 | Ideology            | Market-driven                            | Value-driven, anti-hoarding                   |
+
+<code>
+## blockchain algorithm
+
+```
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+
+contract CooperativeOwnership {
+
+
+struct Contributor {
+uint256 totalContributed;
+uint256 lastUpdated;
+bool exists;
+}
+
+
+mapping(address => Contributor) public contributors;
+address[] public contributorList;
+
+
+uint256 public totalContributions = 0;
+uint256 public decayRate = 10; // 10% monthly decay
+uint256 public decayInterval = 30 days;
+uint256 public lastDecayTimestamp;
+
+
+event ContributionReceived(address indexed user, uint256 amount);
+event ProfitsDistributed(uint256 totalAmount);
+
+
+modifier onlyExisting(address user) {
+require(contributors[user].exists, “Contributor not found”);
+_;
+}
+
+
+constructor() {
+lastDecayTimestamp = block.timestamp;
+}
+
+
+// — Core Function: Record contribution —
+function contribute() external payable {
+require(msg.value > 0, “Contribution must be positive”);
+
+
+if (!contributors[msg.sender].exists) {
+contributors[msg.sender] = Contributor(0, block.timestamp, true);
+contributorList.push(msg.sender);
+}
+
+
+_applyDecay(msg.sender);
+
+
+contributors[msg.sender].totalContributed += msg.value;
+contributors[msg.sender].lastUpdated = block.timestamp;
+
+
+totalContributions += msg.value;
+
+
+emit ContributionReceived(msg.sender, msg.value);
+}
+
+
+// — View ownership percentage —
+function getShare(address user) public view returns (uint256) {
+if (totalContributions == 0) return 0;
+return (contributors[user].totalContributed * 1e18) / totalContributions;
+}
+
+
+// — Distribute contract balance as profits to current stakeholders —
+function distributeProfits() external {
+uint256 balance = address(this).balance;
+require(balance > 0, “No balance to distribute”);
+
+
+for (uint256 i = 0; i < contributorList.length; i++) {
+address user = contributorList[i];
+_applyDecay(user);
+
+
+uint256 share = getShare(user);
+uint256 payout = (share * balance) / 1e18;
+
+
+if (payout > 0) {
+payable(user).transfer(payout);
+}
+}
+
+
+emit ProfitsDistributed(balance);
+}
+
+
+// — Optional: Periodic global decay —
+function decayAllContributions() external {
+require(block.timestamp >= lastDecayTimestamp + decayInterval, “Too soon for next decay”);
+
+
+for (uint256 i = 0; i < contributorList.length; i++) {
+address user = contributorList[i];
+_applyDecay(user);
+}
+
+
+lastDecayTimestamp = block.timestamp;
+}
+
+
+// — Internal: Apply decay to a specific user —
+function _applyDecay(address user) internal onlyExisting(user) {
+Contributor storage c = contributors[user];
+uint256 elapsed = block.timestamp – c.lastUpdated;
+
+
+if (elapsed >= decayInterval) {
+uint256 numPeriods = elapsed / decayInterval;
+
+
+for (uint256 i = 0; i < numPeriods; i++) {
+uint256 decayed = (c.totalContributed * decayRate) / 100;
+c.totalContributed -= decayed;
+totalContributions -= decayed;
+}
+
+
+c.lastUpdated = block.timestamp;
+}
+}
+
+
+// — Fallback: Accept ETH —
+receive() external payable {
+contribute();
+}
+}
+```
+
+</code>
