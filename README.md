@@ -22,10 +22,10 @@ The mechanism for assigning/claiming the value is an open-source blockchain algo
 | Accessibility       | High barrier (capital or network needed) | Low — anyone can join by participating        |
 | Ideology            | Market-driven                            | Value-driven, anti-hoarding                   |
 
-<code>
+
 ## blockchain algorithm
 
-```
+`
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
@@ -164,6 +164,6 @@ receive() external payable {
 contribute();
 }
 }
-```
+`
 
 </code>
