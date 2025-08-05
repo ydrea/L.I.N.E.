@@ -1,2 +1,23 @@
-# L.I.N.E.
-capitalism hack – Laterally Integrated Network Enterprise (L.I.N.E.)
+# capitalism hack – Laterally Integrated Network Enterprise (L.I.N.E.)
+
+The issue you need to solve is – inadequate accumulation of wealth. This issue is caused by a bug in capitalism, that enables the wealthy (‘capitalists’) to become increasingly wealthier, while everyone else goes poorer. 
+Obviously, the imbalance of wealth is causing the imbalance of power - in capitalism, if you are not the owner, the only power you posses is your working time, so when you sell that to a corporation, what are you left with? 
+
+Luckily, there is a virus that can neutralise this bug – and this virus is a publicly traded company! 
+
+Now, you are probably wondering how can another company be a virus designed to hack the capitalism?
+
+The response is simple – it belongs to You and I! Really, it belongs to everyone who chooses to either generate income for this company (by purchasing its goods, or paying for its services), or create added value to it (by offering goods or services through this company). The value traded is automatically converted into a percentage of ownership, so no one gets wealthy, but everyone who decides to partake gets richer. 
+
+The mechanism for assigning/claiming the value is an open-source blockchain algorithm, describing a decentralized cooperative enterprise that uses blockchain-based value accounting to assign ownership dynamically to contributors and consumers — ie. a kind of “anti-capitalist capitalist” Decentralised Autonomous Organisation — a mechanism that rewards value-creation and participation directly, rather than hoarding ownership, as presented in the table below:
+
+
+## DAO comparison table 
+
+|                     | Typical Crypto DAO                       | L.I.N.E. DAO                                  |
+|---------------------|------------------------------------------|-----------------------------------------------|
+| Ownership           | Often based on capital (buy tokens)      | Based on contribution (value created)         |
+| Power Accumulation  | Wealthy participants can dominate        | Power decays without continued contribution   |
+| Profit Distribution | Optional                                 | Central to the model — shared by contributors |
+| Accessibility       | High barrier (capital or network needed) | Low — anyone can join by participating        |
+| Ideology            | Market-driven                            | Value-driven, anti-hoarding                   |
