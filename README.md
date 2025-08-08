@@ -45,8 +45,8 @@ address[] public contributorList;
 
 
 uint256 public totalContributions = 0;
-uint256 public decayRate = 10; // 10% monthly decay
-uint256 public decayInterval = 30 days;
+uint256 public decayRate = 4; // 4% yearly decay
+uint256 public decayInterval = 365 days;
 uint256 public lastDecayTimestamp;
 
 
