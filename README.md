@@ -28,157 +28,59 @@ The mechanism for assigning/claiming the value is an open-source blockchain algo
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-contract CooperativeOwnership {
-    // Struct to track contributor information
-    struct Contributor {
-        uint256 totalContributed;  // Total ETH contributed by this address
-        uint256 lastUpdated;      // Timestamp of last contribution/growth application
-        bool exists;              // Flag indicating if this contributor exists
-    }
-
-    // Storage mappings
-   mapping(address => Contributor) public contributors;  // Contributor data by address
-   address[] public contributorList;                    // List of all contributor addresses
-
-    // Growth parameters (replaces decay parameters)
-   uint256 public totalContributions = 0;       // Total ETH contributed system-wide
-   uint256 public growthRate = 4;               // 4% annual growth (fixed-point)
-   uint256 public growthInterval = 365 days;    // Time between growth applications
-   uint256 public lastGrowthTimestamp;          // Last time growth was applied globally
-
+contract OptimizedStaking {
+    // State variables
+    mapping(address => uint256) public balances;
+    uint256 public totalStaked;
+    
     // Events
-   event ContributionReceived(address indexed user, uint256 amount);
-   event ProfitsDistributed(uint256 totalAmount);
-   event GrowthApplied(uint256 newTotal);
+   event Staked(address indexed user, uint256 amount);
+   event RewardClaimed(address indexed user, uint256 amount);
 
-    // Modifier to check if contributor exists
-   modifier onlyExisting(address user) {
-        require(contributors[user].exists, "Contributor not found");
-        _;
-    }
-
-    // Initialize last growth timestamp to contract creation
-   constructor() {
-     lastGrowthTimestamp = block.timestamp;
-    }
-
-    // ========================
-    // Core Growth Functionality
-    // ========================
-
-    // Applies compound growth to the total contributions
-  function _applyGrowth() internal {
-        uint256 elapsed = block.timestamp - lastGrowthTimestamp;
+    // Stake ETH with gas optimizations
+   function stake() external payable {
+        require(msg.value > 0, "Cannot stake 0 ETH");
         
-        // Only proceed if full growth interval has passed
-   if (elapsed >= growthInterval) {
-            uint256 periods = elapsed / growthInterval;
-            
-            // Calculate growth factor (1.04^periods)
-   uint256 growthFactor = 10**18; // 1.0 in fixed-point
-            for (uint256 i = 0; i < periods; i++) {
-                growthFactor = growthFactor * (100 + growthRate) / 100;
-            }
-            
-            // Apply growth to total contributions
-   uint256 newTotal = (totalContributions * growthFactor) / 10**18;
-            uint256 growthAmount = newTotal - totalContributions;
-            
-   totalContributions = newTotal;
-   lastGrowthTimestamp += periods * growthInterval;
-            
-   emit GrowthApplied(totalContributions);
+   unchecked { // Safe because msg.value is bounded
+            balances[msg.sender] += msg.value;
+            totalStaked += msg.value;
         }
+        emit Staked(msg.sender, msg.value);
     }
 
-    // Applies growth to an individual contributor's balance
-   function _applyIndividualGrowth(address user) internal onlyExisting(user) {
-        Contributor storage c = contributors[user];
-        uint256 elapsed = block.timestamp - c.lastUpdated;
+    // Claim rewards individually (gas-efficient)
+   function claimRewards() external {
+        uint256 rewardPool = address(this).balance - totalStaked;
+        uint256 userBalance = balances[msg.sender];
+        require(rewardPool > 0 && userBalance > 0, "No rewards available");
         
-   if (elapsed >= growthInterval) {
-            uint256 periods = elapsed / growthInterval;
-            uint256 growthFactor = 10**18;
-            
-   for (uint256 i = 0; i < periods; i++) {
-                growthFactor = growthFactor * (100 + growthRate) / 100;
-            }
-            
-   uint256 newBalance = (c.totalContributed * growthFactor) / 10**18;
-   uint256 growthAmount = newBalance - c.totalContributed;
-            
-   c.totalContributed = newBalance;
-    c.lastUpdated += periods * growthInterval;
-        }
-    }
-
-    // ===================
-    // User-Facing Functions
-    // ===================
-
-    // Record a new contribution
-  function contribute() external payable {
-        require(msg.value > 0, "Contribution must be positive");
+   uint256 share = (userBalance * rewardPool) / totalStaked;
         
-        // Initialize new contributor if needed
-  if (!contributors[msg.sender].exists) {
-            contributors[msg.sender] = Contributor(0, block.timestamp, true);
-            contributorList.push(msg.sender);
+        // Apply Checks-Effects-Interactions pattern
+   unchecked {
+            balances[msg.sender] += share;
+            totalStaked += share;
         }
         
-        // Apply growth before updating balances
-   _applyGrowth();
-   _applyIndividualGrowth(msg.sender);
-       
-        // Update balances
-   contributors[msg.sender].totalContributed += msg.value;
-   contributors[msg.sender].lastUpdated = block.timestamp;
-   totalContributions += msg.value;
-        
-   emit ContributionReceived(msg.sender, msg.value);
+   payable(msg.sender).transfer(share);
+        emit RewardClaimed(msg.sender, share);
     }
 
-    // View ownership percentage (in 1e18 fixed-point)
-   function getShare(address user) public view returns (uint256) {
-        if (totalContributions == 0) return 0;
-        return (contributors[user].totalContributed * 1e18) / totalContributions;
-    }
-
-    // Distribute contract balance as profits
-   function distributeProfits() external {
-        uint256 balance = address(this).balance;
-        require(balance > 0, "No balance to distribute");
+    // Withdraw with rewards
+   function withdraw() external {
+        uint256 userBalance = balances[msg.sender];
+        require(userBalance > 0, "No balance to withdraw");
         
-        // Apply growth to all before distribution
-   _applyGrowth();
-   for (uint256 i = 0; i < contributorList.length; i++) {
-            _applyIndividualGrowth(contributorList[i]);
+        // Claim rewards first
+   if (address(this).balance > totalStaked) {
+            this.claimRewards();
         }
         
-        // Distribute according to shares
-   for (uint256 i = 0; i < contributorList.length; i++) {
-            address user = contributorList[i];
-            uint256 share = getShare(user);
-            uint256 payout = (share * balance) / 1e18;
-            
-   if (payout > 0) {
-                payable(user).transfer(payout);
-            }
-        }
-        
-   emit ProfitsDistributed(balance);
-    }
-
-    // Manual trigger for growth application
-   function applyGrowth() external {
-        _applyGrowth();
-        for (uint256 i = 0; i < contributorList.length; i++) {
-            _applyIndividualGrowth(contributorList[i]);
-        }
-    }
-
-    // Fallback function to accept ETH
-   receive() external payable {
-        contribute();
+        // Then withdraw principal
+   uint256 principal = balances[msg.sender];
+   balances[msg.sender] = 0;
+   totalStaked -= principal;
+   payable(msg.sender).transfer(principal);
     }
 }
+
