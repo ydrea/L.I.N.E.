@@ -23,6 +23,17 @@ The mechanism for assigning/claiming the value is an open-source blockchain algo
 | Ideology            | Market-driven                            | Value-driven, anti-hoarding                   |
 
 
+##  Value Table (With Activity Requirements)
+
+|   | Active Contributor | Inactive After Year 1 |
+|---|--------------------|-----------------------|
+| 0 | 1000.00 ETH        | 1000.00 ETH           |
+| 1 | 1040.00 ETH        | 1040.00 ETH           |
+| 2 | 1081.60 ETH        | 1040.00 ETH (no grow) |
+| 3 | 1124.86 ETH        | 1040.00 ETH           |
+| 4 | 1169.86 ETH        | 1040.00 ETH           |
+| 5 | 1216.65 ETH        | 1040.00 ETH           |
+
 ## blockchain algorithm
 
 // SPDX-License-Identifier: MIT
