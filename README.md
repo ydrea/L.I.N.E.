@@ -28,8 +28,8 @@ The mechanism for assigning/claiming the value is an open-source blockchain algo
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
+     // // State variables
 contract OptimizedStaking {
-    // State variables
     mapping(address => uint256) public balances;
     uint256 public totalStaked;
     
