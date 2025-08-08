@@ -1,0 +1,55 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+contract CooperativeOwnership {
+    // Struct now tracks last activity timestamp separately
+    struct Contributor {
+        uint256 totalContributed;
+        uint256 lastGrowthApplied; // Tracks last growth application
+        uint256 lastActivity;      // Tracks last contribution
+        bool exists;
+    }
+
+    // Growth parameters with activity requirements
+    uint256 public growthRate = 4;            // 4% annual growth
+    uint256 public growthInterval = 365 days;
+    uint256 public maxInactivity = 180 days;  // 6 months without activity loses growth
+
+    // Modified growth application
+    function _applyConditionalGrowth(address user) internal {
+        Contributor storage c = contributors[user];
+        
+        // Check if user has been active recently
+        bool isActive = (block.timestamp - c.lastActivity) <= maxInactivity;
+        
+        if (isActive && block.timestamp >= c.lastGrowthApplied + growthInterval) {
+            uint256 periods = (block.timestamp - c.lastGrowthApplied) / growthInterval;
+            uint256 growthAmount = (c.totalContributed * growthRate * periods) / 100;
+            
+            c.totalContributed += growthAmount;
+            c.lastGrowthApplied = block.timestamp;
+        }
+    }
+
+    // Updated contribute function
+    function contribute() external payable {
+        require(msg.value > 0, "Contribution must be positive");
+        
+        if (!contributors[msg.sender].exists) {
+            contributors[msg.sender] = Contributor(
+                msg.value,
+                block.timestamp,
+                block.timestamp,
+                true
+            );
+            contributorList.push(msg.sender);
+        } else {
+            _applyConditionalGrowth(msg.sender);
+            contributors[msg.sender].totalContributed += msg.value;
+            contributors[msg.sender].lastActivity = block.timestamp;
+        }
+        
+        totalContributions += msg.value;
+        emit ContributionReceived(msg.sender, msg.value);
+    }
+}
