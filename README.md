@@ -34,64 +34,7 @@ The mechanism for assigning/claiming the value is an open-source blockchain algo
 | 4 | 1169.86 ETH        | 1040.00 ETH           |
 | 5 | 1216.65 ETH        | 1040.00 ETH           |
 
-## blockchain algorithm
-
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
-
-     // // State variables
-contract OptimizedStaking {
-    mapping(address => uint256) public balances;
-    uint256 public totalStaked;
-    
-    // Events
-   event Staked(address indexed user, uint256 amount);
-   event RewardClaimed(address indexed user, uint256 amount);
-
-    // Stake ETH with gas optimizations
-   function stake() external payable {
-        require(msg.value > 0, "Cannot stake 0 ETH");
-        
-   unchecked { // Safe because msg.value is bounded
-            balances[msg.sender] += msg.value;
-            totalStaked += msg.value;
-        }
-        emit Staked(msg.sender, msg.value);
-    }
-
-    // Claim rewards individually (gas-efficient)
-   function claimRewards() external {
-        uint256 rewardPool = address(this).balance - totalStaked;
-        uint256 userBalance = balances[msg.sender];
-        require(rewardPool > 0 && userBalance > 0, "No rewards available");
-        
-   uint256 share = (userBalance * rewardPool) / totalStaked;
-        
-        // Apply Checks-Effects-Interactions pattern
-   unchecked {
-            balances[msg.sender] += share;
-            totalStaked += share;
-        }
-        
-   payable(msg.sender).transfer(share);
-        emit RewardClaimed(msg.sender, share);
-    }
-
-    // Withdraw with rewards
-   function withdraw() external {
-        uint256 userBalance = balances[msg.sender];
-        require(userBalance > 0, "No balance to withdraw");
-        
-        // Claim rewards first
-   if (address(this).balance > totalStaked) {
-            this.claimRewards();
-        }
-        
-        // Then withdraw principal
-   uint256 principal = balances[msg.sender];
-   balances[msg.sender] = 0;
-   totalStaked -= principal;
-   payable(msg.sender).transfer(principal);
-    }
-}
-
+## blockchain algorithm value flow diagram
+Participant → Contributes Value → Earns Score → (Active) → Receives Rewards
+                                   ↓
+                              (Inactive) → Score Decays → Value Redistributed
