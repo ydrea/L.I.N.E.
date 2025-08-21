@@ -8,7 +8,7 @@ Obviously, the imbalance of wealth is causing the imbalance of power - in capita
 
 Luckily, there is a virus that can neutralise this bug – and this virus is a publicly traded company! 
 
-Now, you are probably wondering how can another company be a virus designed to hack the capitalism?
+Now, you are probably wondering how can another company be a virus designed to hack capitalism?
 
 The response is simple – it belongs to You and I! Really, it belongs to everyone who chooses to either generate income for this company (by purchasing its goods, or paying for its services), or create added value to it (by offering goods or services through this company). The value traded is automatically converted into a percentage of ownership, so no one gets wealthy, but everyone who decides to partake gets (a little) richer. 
 
