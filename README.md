@@ -26,9 +26,3 @@ The mechanism for assigning/claiming the value is an open-source blockchain algo
 | Ideology            | Market-driven                            | Value-driven, anti-hoarding                   |
 
 The only limitation is non-transferability of ownership. Yes, that includes non-inheritability too!
-
-## blockchain algorithm value flow diagram
-
-<img width="1134" height="126" alt="Screenshot from 2025-08-08 22-36-44" src="https://github.com/user-attachments/assets/55dc2001-2cee-431e-8a5e-718696808c27" />
-
-Inactivity period: 1 year w/o contribution
