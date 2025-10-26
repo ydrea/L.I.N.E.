@@ -20,22 +20,12 @@ The mechanism for assigning/claiming the value is an open-source blockchain algo
 |                     | Typical Crypto DAO                       | L.I.N.E. DAO                                  |
 |---------------------|------------------------------------------|-----------------------------------------------|
 | Ownership           | Often based on capital (buy tokens)      | Based on contribution (value created)         |
-| Power Accumulation  | Wealthy participants can dominate        | Power decays without continued contribution   |
+| Power Accumulation  | Wealthy participants can dominate        | Power effectively decays without contribution |
 | Profit Distribution | Optional                                 | Central to the model — shared by contributors |
 | Accessibility       | High barrier (capital or network needed) | Low — anyone can join by participating        |
 | Ideology            | Market-driven                            | Value-driven, anti-hoarding                   |
 
-
-##  Value Table (With Activity Requirements)
-
-|   | Active Contributor | Inactive After Year 1 |
-|---|--------------------|-----------------------|
-| 0 | 1000.00 ETH        | 1000.00 ETH           |
-| 1 | 1040.00 ETH        | 1040.00 ETH           |
-| 2 | 1081.60 ETH        | 1040.00 ETH (no grow) |
-| 3 | 1124.86 ETH        | 1040.00 ETH           |
-| 4 | 1169.86 ETH        | 1040.00 ETH           |
-| 5 | 1216.65 ETH        | 1040.00 ETH           |
+The only limitation is non-transferability of ownership. Yes, that includes non-inheritability too!
 
 ## blockchain algorithm value flow diagram
 
