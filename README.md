@@ -25,4 +25,5 @@ The mechanism for assigning/claiming the value is an open-source blockchain algo
 | Accessibility       | High barrier (capital or network needed) | Low — anyone can join by participating        |
 | Ideology            | Market-driven                            | Value-driven, anti-hoarding                   |
 
+Individual ownership is dissolved only by death of the person. 
 The only limitation is non-transferability of ownership. Yes, that includes non-inheritability too!
