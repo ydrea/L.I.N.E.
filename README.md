@@ -3,7 +3,7 @@
 <i>"This time it was right, it would work, and no one would have to get nailed to anything."
 Douglas Adams, A Hitchiker's Guide to the Galaxy</i>
 
-The issue you need to solve is – inadequate accumulation of wealth. This issue is caused by a bug in capitalism, that enables the wealthy (‘capitalists’) to become increasingly wealthier, while everyone else goes poorer. 
+The issue you need to solve is – inadequate distribution of wealth. This issue is caused by a bug in capitalism, that enables the wealthy (‘capitalists’) to become increasingly wealthier, while everyone else goes poorer. 
 Obviously, the imbalance of wealth is causing the imbalance of power - in capitalism, if you are not the owner, the only power you posses is your working time, so when you sell that to a corporation, what are you left with? 
 
 Luckily, there is a virus that can neutralise this bug – and this virus is a publicly traded company! 
